@@ -5,13 +5,11 @@ local host, _, port, path = string.match(connectionString, "^ws"..pattern)
 if host then
     protocol = "ws"
 else
-    host, _, port, path = string.match(connectionString, "^ws"..pattern)
+    host, _, port, path = string.match(connectionString, "^wss"..pattern)
     if host then
         protocol = "wss"
     end
 end
-print("Parsed protocol: "..(protocol or "")..", host: "..(host or "")..
-            ", port: "..(port or "")..", path: "..(path or ""))
 
 if (protocol == "ws" or protocol == "wss") then
     if (port == nil or port == "") then

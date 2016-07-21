@@ -51,7 +51,7 @@ function websocket.createClient()
             
             if opcode == 9 then         -- ping
                 print("[client] Received PING from the server")
-                self:send("Pong", 0xA)
+                self:send("pong", 0xA)
                 return
             elseif opcode == 0xA then       -- pong
                 print("[client] Received PONG from the server")
@@ -72,7 +72,7 @@ function websocket.createClient()
 
         ping = function (self)
             print("[client] Send PING to the server")
-            self:send("Ping", 0x9)
+            self:send("ping", 0x9)
         end,
 
         sendHandshake = function (self, host, path)
@@ -87,7 +87,7 @@ function websocket.createClient()
         end,
 
         readHandshake = function (self, result)
-            print("[client] Read handshake: "..result)
+            print("[client] Read handshake.")
             self.socket:on("receive", function(s, data) self:receive(data) end)
             if self.on_connected then
                 print("[client] Connected!")
@@ -97,10 +97,12 @@ function websocket.createClient()
 
         make = function (self, file, input)
             _G.do_input = input
-            return dofile("ws_"..file..".lua")
+            node.stripdebug(3)
+            node.compile("ws_"..file..".lua")
+            return dofile("ws_"..file..".lc")
         end,
 
-        connect = function (self, connection_string, timeout)
+        connect = function (self, connection_string)
             print("[client] Connect to "..connection_string)
             local protocol, host, port, path = self:make("parse_url", connection_string)
 
@@ -133,7 +135,7 @@ function websocket.createClient()
         end,
 
         close = function (self)
-            print("[client] Close connectin")
+            print("[client] Close connection")
             if self.socket then
                 self.socket:close()
             end

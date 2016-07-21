@@ -16,6 +16,8 @@ TODO
 * node
 * tmr
 * wifi
+* cjson
+* http
 
 Consider building your own image using [this](http://nodemcu-build.com) service. You can use [esptool](https://github.com/themadinventor/esptool) to flash your NodeMCU firmware.
 

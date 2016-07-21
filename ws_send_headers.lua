@@ -49,12 +49,6 @@ headers = headers.."Sec-Websocket-Key: "..sec_websocket_accept(generate_key())..
 headers = headers.."Host: "..host.."\r\n"
 headers = headers.."Origin: NodeMCUWebSocketClient\r\n"
 headers = headers.."Nodeid: NodeMCU\r\n"
-
-if #add_header > 0 then
-    
-end
 headers = headers.."\r\n"
-
-print("Handshaking headers: "..headers)
 
 socket:send(headers)

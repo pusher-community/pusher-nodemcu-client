@@ -1,6 +1,6 @@
-wifi.setmode(wifi.STATIONAP)
-wifi.sta.config("<NETWORK>", "<PASS>")
-wifi.sta.connect()
+--wifi.setmode(wifi.STATIONAP)
+--wifi.sta.config("<NETWORK>", "<PASS>")
+--wifi.sta.connect()
 
 gpio.mode(5, gpio.OUTPUT)
 gpio.write(5, gpio.LOW)
@@ -12,15 +12,13 @@ tmr.alarm(0, 3000, 1, function ()
     print("IP: "..ip..", memory: "..node.heap())
     st = node.heap()
 
-    node.stripdebug(3)
-    node.compile("pusher_client.lua")
-    dofile("pusher_client.lc")
+    dofile("pusher_client.lua")
 
     print("Loading pusher client takes "..(st - node.heap()).." bytes")
 
     local pusher_client = pusher.createClient('<APPKEY>', 'http://<WEBSITE>/pusher/auth/')
 
-    pusher_client.on_connected = function(client, socket_id)
+    pusher_client.on_connection = function(client, socket_id)
         gpio.write(5, gpio.HIGH)
         local sub = client:subscribe('private-temperature_channel')
 

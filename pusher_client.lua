@@ -1,20 +1,16 @@
 
-node.stripdebug(3)
-node.compile("ws_client.lua")
-dofile("ws_client.lc")
-
 do
 local pusher = {}
 _G.pusher = pusher
 
 function pusher.createClient(appKey, authServerPath)
     local client = {
-        ws_client = websocket.createClient(),
+        ws_client = nil,
 
         socket_id = nil,
         authServerPath = authServerPath,
 
-        on_connected = nil,     -- on_conected(client, socket_id)
+        on_connection = nil,     -- on_conection(client)
 
         on_close = nil,         -- on_close(client)
 
@@ -22,7 +18,7 @@ function pusher.createClient(appKey, authServerPath)
         subscriptions_bindings = {}, -- 2d table: [channel][event type] = handler
         
         isConnected = function(self)
-            return self.socket_id ~= nil and self.ws_client.isConnected
+            return self.socket_id ~= nil
         end,
 
         bind = function(self, channel_name, event_type, handler)
@@ -122,26 +118,27 @@ function pusher.createClient(appKey, authServerPath)
             end 
         end,
 
-        ping = function (self)
-            self.ws_client:ping()
-        end,
-
         connect = function (self)
-            local connection_string = "ws://ws.pusherapp.com/app/"..appKey.."?client=js&version=3.1&protocol=5"
+            self.ws_client = websocket.createClient()
 
-            self.ws_client.on_receive = function(c, payload) self.receive(self, payload) end
-            
-            self.ws_client:connect(connection_string)
+            local connection_url = "ws://ws.pusherapp.com/app/"..appKey.."?client=js&version=3.1&protocol=5"
+
+            self.ws_client:on("connection", function() if self.on_connection then self:on_connected() end end)
+            self.ws_client:on("receive", function(c, payload) self.receive(self, payload) end)
+            self.ws_client:on("close", function() if self.on_close then self:on_close() end end)
+
+            self.ws_client:connect(connection_url)
         end,
 
         close = function (self)
             if self.ws_client then
                 self.ws_client:close()
             end
-            self.ws_client = websocket.createClient()
             if self.on_close then
-                self.on_close(self)
+                self:on_close()
             end
+            self.ws_client = nil
+            self.socket_id = nil
         end
     }
     return client

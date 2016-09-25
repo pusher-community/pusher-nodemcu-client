@@ -12,9 +12,9 @@ local pusher_client = pusher.createClient('<APPKEY>', 'http://<WEBSITE>/pusher/a
 ```
 Note that the second argument is optional and it's only required for private channels.
 
-Now you can register the `on_connected` and `on_close` hooks. For example: 
+Now you can register the `on_connection` and `on_close` hooks. For example:
 ```lua
-pusher_client.on_connected = function(client, socket_id)
+pusher_client.on_connection = function(client, socket_id)
     gpio.write(5, gpio.HIGH) -- turn on a led
 end
 pusher_client.on_close = function()
@@ -24,7 +24,7 @@ end
 
 After the hooks are setup, it's safe to call connect:
 ```lua
-pusher_client.connect()
+pusher_client:connect()
 ```
 
 When connected, you can subscribe to channels and then bind/unbind a handler to a given event type:
@@ -57,6 +57,7 @@ pusher_client:trigger('private-test-channel', 'event-type', {data = "table"})
 * net
 * node
 * tmr
+* websocket
 * wifi
 
 Consider building your own image using [this](http://nodemcu-build.com) service. You can use [esptool](https://github.com/themadinventor/esptool) to flash your NodeMCU firmware.

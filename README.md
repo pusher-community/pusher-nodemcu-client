@@ -62,6 +62,12 @@ pusher_client:trigger('private-test-channel', 'event-type', {data = "table"})
 
 Consider building your own image using [this](http://nodemcu-build.com) service. You can use [esptool](https://github.com/themadinventor/esptool) to flash your NodeMCU firmware.
 
-## Installing the plugin
+## Installing the library
 
 Copy all files of this project to the NodeMCU. You can accomplish this using [ESPlorer](http://esp8266.ru/esplorer/) or [nodemcu-tool](https://www.npmjs.com/package/nodemcu-tool).
+
+Alternatively, you can run this one line to install it:
+
+```lua
+http.get("https://raw.githubusercontent.com/pusher-community/pusher-nodemcu-client/master/pusher_client.lua", nil, function(_, c) local f = file.open("pusher_client.lua", "w+") if f then f:write(c) f:close() print("Latest client installed.") end end)
+```

@@ -1,7 +1,10 @@
-
 do
 local pusher = {}
 _G.pusher = pusher
+
+if _G.cjson == nil then
+    _G.cjson = sjson
+end
 
 function pusher.createClient(appKey, authServerPath)
     local client = {

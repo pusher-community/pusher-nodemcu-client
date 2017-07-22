@@ -10,9 +10,8 @@ function pusher.createClient(appKey, authServerPath)
         socket_id = nil,
         authServerPath = authServerPath,
 
-        on_connection = nil,     -- on_conection(client)
-
-        on_close = nil,         -- on_close(client)
+        on_connection = nil, -- on_conection(client)
+        on_close = nil,      -- on_close(client)
 
         global_bindings = {},        -- 1d table:          [event type] = handler
         subscriptions_bindings = {}, -- 2d table: [channel][event type] = handler
@@ -96,9 +95,9 @@ function pusher.createClient(appKey, authServerPath)
 
             if payloadDecoded['event'] == 'pusher:connection_established' then
                 self.socket_id = cjson.decode(payloadDecoded['data'])['socket_id']
-                if self.on_connected then
+                if self.on_connection then
                     print("[pusher] Connected with socket id: " .. self.socket_id)
-                    self.on_connected(self, self.socket_id)
+                    self.on_connection(self, self.socket_id)
                 end
                 return
             end
@@ -123,7 +122,7 @@ function pusher.createClient(appKey, authServerPath)
 
             local connection_url = "ws://ws.pusherapp.com/app/"..appKey.."?client=js&version=3.1&protocol=5"
 
-            self.ws_client:on("connection", function() if self.on_connection then self:on_connected() end end)
+            self.ws_client:on("connection", function() if self.on_connection then self:on_connection() end end)
             self.ws_client:on("receive", function(c, payload) self.receive(self, payload) end)
             self.ws_client:on("close", function() if self.on_close then self:on_close() end end)
 

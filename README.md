@@ -49,14 +49,12 @@ pusher_client:trigger('private-test-channel', 'event-type', {data = "table"})
 ```
 
 ## Required firmware modules
-* bit
-* cjson
+* cjson or sjson
 * crypto
 * file
 * http
 * net
 * node
-* tmr
 * websocket
 * wifi
 

@@ -13,7 +13,7 @@ function pusher.createClient(appKey, authServerPath, cluster)
         socket_id = nil,
         authServerPath = authServerPath,
 
-        on_connection = nil, -- on_conection(client)
+        on_connection = nil, -- on_connection(client)
         on_close = nil,      -- on_close(client)
 
         global_bindings = {},        -- 1d table:          [event type] = handler
@@ -125,7 +125,6 @@ function pusher.createClient(appKey, authServerPath, cluster)
 
             local connection_url = "ws://ws-"..cluster..".pusher.com/app/"..appKey.."?client=js&version=3.1&protocol=5"
 
-            self.ws_client:on("connection", function() if self.on_connection then self:on_connection() end end)
             self.ws_client:on("receive", function(c, payload) self.receive(self, payload) end)
             self.ws_client:on("close", function() if self.on_close then self:on_close() end end)
 

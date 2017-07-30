@@ -8,7 +8,7 @@ Additional work is still required for better connectivety, error handling and at
 To start, create a new pusher client instance, as shown below.
 ```lua
 dofile("pusher_client.lua")
-local pusher_client = pusher.createClient('<APPKEY>', 'http://<WEBSITE>/pusher/auth/')
+local pusher_client = pusher.createClient('<APPKEY>', 'http://<WEBSITE>/pusher/auth/', '<APPCLUSTER>')
 ```
 Note that the second argument is optional and it's only required for private channels.
 

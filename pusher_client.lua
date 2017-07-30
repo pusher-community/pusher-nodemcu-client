@@ -6,7 +6,7 @@ if _G.cjson == nil then
     _G.cjson = sjson
 end
 
-function pusher.createClient(appKey, authServerPath)
+function pusher.createClient(appKey, authServerPath, cluster)
     local client = {
         ws_client = nil,
 
@@ -123,7 +123,7 @@ function pusher.createClient(appKey, authServerPath)
         connect = function (self)
             self.ws_client = websocket.createClient()
 
-            local connection_url = "ws://ws.pusherapp.com/app/"..appKey.."?client=js&version=3.1&protocol=5"
+            local connection_url = "ws://ws-"..cluster..".pusher.com/app/"..appKey.."?client=js&version=3.1&protocol=5"
 
             self.ws_client:on("connection", function() if self.on_connection then self:on_connection() end end)
             self.ws_client:on("receive", function(c, payload) self.receive(self, payload) end)

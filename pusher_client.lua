@@ -43,7 +43,7 @@ function pusher.createClient(appKey, authServerPath, cluster)
 
         subscribe = function (self, name)
             if name == nil or self.socket_id == nil then
-                print("Not connected or channel name is empty.")
+                print("[pusher] Not connected or channel name is empty.")
                 return
             end
             self.subscriptions_bindings[name] = self.subscriptions_bindings[name] or {}
@@ -74,7 +74,7 @@ function pusher.createClient(appKey, authServerPath, cluster)
                           end
                         end
                     end)
-                print("Attempting post to " .. authServerPath)
+                print("[pusher] Attempting to subscribe to " .. name)
             else
                 self.ws_client:send('{"event":"pusher:subscribe","data":{"channel":"'..name..'"}}')
             end
